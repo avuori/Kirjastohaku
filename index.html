@@ -10,6 +10,26 @@
 			select { height: 26px; font-size: 20px; }
 			label { font-size: 17pt; }
 			iframe { position: absolute; right: 0; width: 770px; height: 600px;}
+			
+			.ribbon {
+			  background-color: #a00;
+			  overflow: hidden;
+				position: absolute;
+				  left: -2.8em;
+				  bottom: 2.5em;
+				  -moz-transform: rotate(45deg);
+				  -webkit-transform: rotate(45deg);			  
+			}
+			.ribbon a {
+			  border: 1px solid #faa;
+			  color: #fff;
+			  display: block;
+			  font: bold 81.25% 'Helvetiva Neue', Helvetica, Arial, sans-serif;
+			  margin: 0.05em 0;
+			  padding: 0.5em 3.5em;
+			  text-align: center;
+			  text-decoration: none;
+			}
 		</style>
 		<script type="text/javascript" src="jquery-1.6.1.js"></script>
 		<script type="text/javascript" src="jquery-ui-1.8.13.custom.min.js"></script>
@@ -67,5 +87,9 @@
 		</select>
 		<input type="text" id="search" />
 		<iframe id="frame" src="about:blank" frameborder="0"></iframe>
+		<div class="ribbon">
+			<a href="http://github.com/avuori/Kirjastohaku" rel="me">Fork me on GitHub</a>
+		</div>
+</div>
 	</body>
 </html>
