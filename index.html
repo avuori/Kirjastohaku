@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta content='text/html; charset=utf-8' http-equiv='content-type'> 
+		<title>Kirjastohaku</title>
+		<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.13.custom.css" />
+		<style type="text/css">
+			.ui-autocomplete-loading { background: white url('ui-anim_basic_16x16.gif') right center no-repeat; }
+			#search { width: 317px; height: 20px; font-size: 20px; }
+			select { height: 26px; font-size: 20px; }
+			label { font-size: 17pt; }
+			iframe { position: absolute; right: 0; width: 770px; height: 600px;}
+		</style>
+		<script type="text/javascript" src="jquery-1.6.1.js"></script>
+		<script type="text/javascript" src="jquery-ui-1.8.13.custom.min.js"></script>
+		<script type="text/javascript">
+		$(function () {
+			var get_object = function (item) {
+				return {
+					label: item.title + (item.author ? " (" + item.author + ")" : ""),
+					url: item.library_url
+				};
+			};
+			$("#search").autocomplete({
+				source: function( request, response ) {
+					$.ajax({
+						url: "http://data.kirjastot.fi/search/" + $("#type").val() + ".json?query=" + encodeURIComponent(request.term),
+						dataType: "jsonp",
+						success: function( data ) {
+							if ($("#type").val() === "isbn") {
+								response([get_object(data)]);
+							} else {
+								response( $.map( data.records, function( item ) {
+									return get_object(item);
+								}));
+							}
+						}
+					});
+				},
+				minLength: 2,
+				select: function( event, ui ) {
+					if (ui.item) {
+						$("#frame").prop("src", ui.item.url.replace("*eng", "*fin"));
+					}
+				},
+				open: function() {
+					$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+				},
+				close: function() {
+					$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+				}
+				
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<label for="search">Hae Helmetistä</label>
+		<select id="type">
+			<option value="title">Nimellä</option>
+			<option value="author">Tekijällä</option>
+			<option value="isbn">ISBN:llä</option>
+		</select>
+		<input type="text" id="search" />
+		<iframe id="frame" src="about:blank" frameborder="0"></iframe>
+	</body>
+</html>
