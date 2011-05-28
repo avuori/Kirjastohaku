@@ -18,9 +18,16 @@
 			var get_object = function (item) {
 				return {
 					label: item.title + (item.author ? " (" + item.author + ")" : ""),
+					value: item.title,
 					url: item.library_url
 				};
 			};
+			$("#type").change(function () {
+				
+				$("#search")
+				.autocomplete("close")
+				.autocomplete("search");
+			});
 			$("#search").autocomplete({
 				source: function( request, response ) {
 					$.ajax({
@@ -30,9 +37,7 @@
 							if ($("#type").val() === "isbn") {
 								response([get_object(data)]);
 							} else {
-								response( $.map( data.records, function( item ) {
-									return get_object(item);
-								}));
+								response( $.map( data.records, get_object));
 							}
 						}
 					});
@@ -49,7 +54,6 @@
 				close: function() {
 					$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
 				}
-				
 			});
 		});
 		</script>
